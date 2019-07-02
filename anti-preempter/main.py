@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
+import sys
 import logging
+import argparse
+from time import gmtime, strftime
 
 logging.basicConfig(level=logging.INFO,
                     format='-> [%(levelname)s] [%(asctime)s] %(message)s',
@@ -29,6 +32,10 @@ def main():
         logger.info("Running in dry-run mode - nodes will not be deleted")
 
     logger.info("Script completed at " + get_timestamp())
+
+
+def get_timestamp() -> str:
+    return strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
 
 def init():
