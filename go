@@ -2,8 +2,10 @@
 set -Eeuo pipefail
 
 if [[ -z ${IMAGE_NAME:-} ]]; then
-  IMAGE_NAME=deduplicator
+  IMAGE_NAME=anti-preempter
 fi 
+
+SRC_DIR=anti-preempter
 
 function help() {
   echo -e "Usage: go <command>"
@@ -23,7 +25,7 @@ function init() {
 
   _console_msg "Initialising local virtual environment ..." INFO true
 
-  pushd $(dirname $BASH_SOURCE[0]) > /dev/null
+  pushd "${SRC_DIR}/" > /dev/null
   pipenv install --dev
   popd > /dev/null
 
@@ -35,7 +37,7 @@ function run() {
 
   _console_msg "Running python:main ..." INFO true
 
-  pushd $(dirname $BASH_SOURCE[0]) > /dev/null
+  pushd "${SRC_DIR}/" > /dev/null
 
   pipenv run python3 main.py "$@"
 
@@ -47,7 +49,7 @@ function run() {
 
 function watch-tests() {
 
-  pushd $(dirname $BASH_SOURCE[0]) > /dev/null
+  pushd "${SRC_DIR}/" > /dev/null
   
   _console_msg "Following unit tests ..." INFO true
 
@@ -60,7 +62,7 @@ function watch-tests() {
 # NB: Dockerfile also runs these, so do not need to use in CI
 function test() {
 
-  pushd $(dirname $BASH_SOURCE[0]) > /dev/null
+  pushd "${SRC_DIR}/" > /dev/null
 
   if [[ ${CI_JOB_TOKEN:-} != "" ]]; then
     pip install pipenv==2018.10.13
@@ -105,7 +107,7 @@ function run-docker() {
   
   _console_msg "Run docker image" INFO true
   
-  docker run -v ${PWD}/output:/app/output ${IMAGE_NAME}:latest "$@"
+  docker run ${IMAGE_NAME}:latest "$@"
 
   popd > /dev/null
 
