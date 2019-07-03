@@ -1,4 +1,4 @@
-# Kubernetes pre-pre-empter
+# Kubernetes anti-preempter
 
 A bit of python that runs as a CronJob in Kubernetes that may or may not kill a node randomly - this is to avoid a situation where all the nodes in a GKE pre-emptible node pool die at the same time (after 24 hours), impacting service.
 
