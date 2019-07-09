@@ -15,6 +15,7 @@ function help() {
   echo -e "    build                Build Docker image (won't push anywhere)"
   echo -e "    test                 Run local unit tests and linting"
   echo -e "    watch-tests          Watch pytest run for faster feedback"
+  echo -e "    push                 Push latest built docker image to Container Registry"
   echo -e "    init                 Set up local virtual env"
   echo -e 
   exit 0
@@ -100,6 +101,29 @@ function build() {
 
 }
 
+function push() {
+
+    _assert_variables_set GCP_PROJECT_NAME
+
+    pushd $(dirname $BASH_SOURCE[0]) >/dev/null
+
+    _console_msg "Pushing image to registry ..."
+
+    if [[ ${CI_SERVER:-} == "yes" ]]; then
+        echo "${GOOGLE_CREDENTIALS}" | gcloud auth activate-service-account --key-file -
+        trap "gcloud auth revoke --verbosity=error" EXIT
+    fi
+
+    gcloud auth configure-docker --quiet
+
+    docker tag ${IMAGE_NAME}:latest eu.gcr.io/${GCP_PROJECT_NAME}/${IMAGE_NAME}:latest
+
+    docker push eu.gcr.io/${GCP_PROJECT_NAME}/${IMAGE_NAME}:latest
+
+    popd >/dev/null 
+
+}
+
 function _assert_variables_set() {
 
   local error=0
@@ -149,7 +173,7 @@ function ctrl_c() {
 
 trap ctrl_c INT
 
-if [[ ${1:-} =~ ^(help|run|build|test|watch-tests|init)$ ]]; then
+if [[ ${1:-} =~ ^(help|run|build|test|watch-tests|push|init)$ ]]; then
   COMMAND=${1}
   shift
   $COMMAND "$@"

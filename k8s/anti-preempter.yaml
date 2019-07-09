@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mw-platform
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: anti-preempter-job
+  namespace: mw-platform
+spec:
+  # schedule: "00 * * * *"
+  schedule: "*/10 * * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: anti-preempter
+            image: eu.gcr.io/moss-work/anti-preempter:latest
+            # dry-run switch
+            # args:
+            # - -t
+          restartPolicy: OnFailure
