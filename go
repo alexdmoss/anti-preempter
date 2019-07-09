@@ -12,7 +12,6 @@ function help() {
   echo -e
   echo -e "    help                 Print this help"
   echo -e "    run                  Run locally from source"
-  echo -e "    run-docker           Run already-built docker image"
   echo -e "    build                Build Docker image (won't push anywhere)"
   echo -e "    test                 Run local unit tests and linting"
   echo -e "    watch-tests          Watch pytest run for faster feedback"
@@ -101,20 +100,6 @@ function build() {
 
 }
 
-function run-docker() {
-
-  pushd $(dirname $BASH_SOURCE[0]) >/dev/null
-  
-  _console_msg "Run docker image" INFO true
-  
-  docker run ${IMAGE_NAME}:latest "$@"
-
-  popd > /dev/null
-
-  _console_msg "Run complete" INFO true
-
-}
-
 function _assert_variables_set() {
 
   local error=0
@@ -164,7 +149,7 @@ function ctrl_c() {
 
 trap ctrl_c INT
 
-if [[ ${1:-} =~ ^(help|run|run-docker|build|test|watch-tests|init)$ ]]; then
+if [[ ${1:-} =~ ^(help|run|build|test|watch-tests|init)$ ]]; then
   COMMAND=${1}
   shift
   $COMMAND "$@"

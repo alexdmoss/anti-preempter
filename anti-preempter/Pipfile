@@ -11,6 +11,7 @@ flake8 = "*"
 pytest = "*"
 pytest-watch = "*"
 pytest-cov = "*"
+pytest-mock = "*"
 
 [requires]
 python_version = "3.7"
