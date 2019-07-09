@@ -1,0 +1,31 @@
+kind: pipeline
+name: default
+
+# steps:
+# - name: build  
+#   image: plugins/docker
+#   settings:
+#     username:
+#       from_secret: docker_username
+#     password:
+#       from_secret: docker_password
+#     repo: index.company.com/foo/bar
+#     registry: eu.gcr.io
+#     auto_tag: true
+# when:
+#   event:
+#   - push
+
+
+steps:
+- name: publish  
+  image: plugins/gcr
+  settings:
+    registry: eu.gcr.io
+    repo: moss-work/anti-preempter
+    tags: latest
+    json_key:
+      from_secret: MW_PUSH_CREDS
+when:
+  event:
+  - push
