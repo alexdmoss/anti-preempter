@@ -17,6 +17,8 @@ name: anti-preempter
 #   event:
 #   - push
 
+image_pull_secrets:
+- dockerconfigjson
 
 steps:
 - name: publish  
