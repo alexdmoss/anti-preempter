@@ -1,6 +1,6 @@
 ---
 kind: pipeline
-name: default
+name: anti-preempter
 
 # steps:
 # - name: build  
@@ -28,8 +28,15 @@ steps:
     json_key:
       from_secret: MW_PUSH_CREDS
   when:
-    event:
-    - push
+    event: push
+    branch: master
+- name: deploy
+  image: eu.gcr.io/moss-work/drone-gke-deployer:latest
+  commands:
+  - ./go test
+  when:
+    event: push
+    branch: master
 ---
 kind: signature
 hmac: 9d268d30d09f6f467b094c8d0449cff1a3d2b30c506400c4b1cbe0efa454bb4b
