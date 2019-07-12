@@ -18,6 +18,8 @@ A bash wrapper script `./go` is provided that provides some help:
 ## To Do
 
 - [ ] CI for deploy
+- [ ] Image Tag in deploy
+- [ ] Drone: define secrets through API
 - [ ] Full set of tests (coverage needs boosting)
 
 ## Useful Stuff

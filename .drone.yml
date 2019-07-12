@@ -1,3 +1,4 @@
+---
 kind: pipeline
 name: default
 
@@ -26,6 +27,11 @@ steps:
     tags: latest
     json_key:
       from_secret: MW_PUSH_CREDS
-when:
-  event:
-  - push
+  when:
+    event:
+    - push
+---
+kind: signature
+hmac: 9d268d30d09f6f467b094c8d0449cff1a3d2b30c506400c4b1cbe0efa454bb4b
+
+...
