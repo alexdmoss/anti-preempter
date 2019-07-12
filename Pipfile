@@ -4,7 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-kubernetes = "*"
+google-api-python-client = "==1.7.8"
+google-auth = "==1.6.3"
+python-dateutil = "*"
 
 [dev-packages]
 flake8 = "*"

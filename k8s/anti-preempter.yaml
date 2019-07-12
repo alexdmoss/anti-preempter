@@ -9,8 +9,8 @@ metadata:
   name: anti-preempter-job
   namespace: mw-platform
 spec:
-  # schedule: "00 * * * *"
-  schedule: "*/10 * * * *"
+  schedule: "00 * * * *"
+  # schedule: "*/10 * * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 5
   concurrencyPolicy: Replace

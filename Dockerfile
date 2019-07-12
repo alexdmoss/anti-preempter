@@ -1,5 +1,9 @@
 FROM python:3.7.2-slim AS requirements
-ADD anti-preempter/ /app
+ADD main.py /app/
+ADD Pipfile /app/
+ADD Pipfile.lock /app/
+ADD anti_preempter/ /app/anti_preempter/
+ADD tests/ /app/tests/
 WORKDIR /app
 RUN pip install pipenv=='2018.11.26'
 RUN pipenv lock -r > requirements.txt

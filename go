@@ -25,7 +25,7 @@ function init() {
 
   _console_msg "Initialising local virtual environment ..." INFO true
 
-  pushd "${SRC_DIR}/" > /dev/null
+  pushd "$(dirname $BASH_SOURCE[0])" > /dev/null
   pipenv install --dev
   popd > /dev/null
 
@@ -37,7 +37,7 @@ function run() {
 
   _console_msg "Running python:main ..." INFO true
 
-  pushd "${SRC_DIR}/" > /dev/null
+  pushd "$(dirname $BASH_SOURCE[0])" > /dev/null
 
   pipenv run python3 main.py "$@"
 
@@ -49,7 +49,7 @@ function run() {
 
 function watch-tests() {
 
-  pushd "${SRC_DIR}/" > /dev/null
+  pushd "$(dirname $BASH_SOURCE[0])" > /dev/null
   
   _console_msg "Following unit tests ..." INFO true
 
@@ -62,7 +62,7 @@ function watch-tests() {
 # NB: Dockerfile also runs these, so do not need to use in CI
 function test() {
 
-  pushd "${SRC_DIR}/" > /dev/null
+  pushd "$(dirname $BASH_SOURCE[0])" > /dev/null
 
   if [[ ${CI_JOB_TOKEN:-} != "" ]]; then
     pip install pipenv==2018.10.13
