@@ -2,24 +2,6 @@
 kind: pipeline
 name: anti-preempter
 
-# steps:
-# - name: build  
-#   image: plugins/docker
-#   settings:
-#     username:
-#       from_secret: docker_username
-#     password:
-#       from_secret: docker_password
-#     repo: index.company.com/foo/bar
-#     registry: eu.gcr.io
-#     auto_tag: true
-# when:
-#   event:
-#   - push
-
-image_pull_secrets:
-- dockerconfigjson
-
 steps:
 - name: publish  
   image: plugins/gcr
@@ -33,7 +15,7 @@ steps:
     event: push
     branch: master
 - name: deploy
-  image: eu.gcr.io/moss-work/drone-gke-deployer:latest
+  image: alexdmoss/drone-gke-deployer:latest
   commands:
   - ./go test
   when:
@@ -41,6 +23,6 @@ steps:
     branch: master
 ---
 kind: signature
-hmac: 9d268d30d09f6f467b094c8d0449cff1a3d2b30c506400c4b1cbe0efa454bb4b
+hmac: 6fa452d235ad00149cd91cb40274fb659471ce544d86d5dd827296aed28e7775
 
 ...
