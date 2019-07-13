@@ -20,6 +20,8 @@ A bash wrapper script `./go` is provided that provides some help:
 - [ ] CI for deploy
 - [ ] Image Tag in deploy
 - [ ] Drone: define secrets through API
+- [ ] Drone: deal with gated builds
+- [ ] DockerHub: Add Dockerfile
 - [ ] Full set of tests (coverage needs boosting)
 
 ## Useful Stuff

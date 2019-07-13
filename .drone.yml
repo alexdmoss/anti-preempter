@@ -23,6 +23,6 @@ steps:
     branch: master
 ---
 kind: signature
-hmac: 6fa452d235ad00149cd91cb40274fb659471ce544d86d5dd827296aed28e7775
+hmac: 06669dd08ad7e48ba5c5f0240dfe1544e56aa8ca82b92d54bb63fc52ca20fb1d
 
 ...

@@ -25,3 +25,22 @@ spec:
             # args:
             # - -t
           restartPolicy: OnFailure
+          env:
+          - name: GCP_PROJECT_ID
+            value: moss-work
+          - name: INSTANCE_INTERVAL
+            value: 600
+          - name: GOOGLE_CREDS
+            valueFrom:
+              secretKeyRef:
+                name: anti-preempter-credentials
+                key: creds
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: anti-preempter-credentials
+type: Opaque
+stringData:
+  config.yaml: |-
+    creds: {{MW_PREEMPT_MANAGER}}
