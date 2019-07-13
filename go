@@ -14,6 +14,7 @@ function help() {
   echo -e "    run                  Run locally from source"
   echo -e "    build                Build Docker image (won't push anywhere)"
   echo -e "    test                 Run local unit tests and linting"
+  echo -e "    deploy               Deploys app to Kubernetes. Designed to run in Drone CI"
   echo -e "    watch-tests          Watch pytest run for faster feedback"
   echo -e "    push                 Push latest built docker image to Container Registry"
   echo -e "    init                 Set up local virtual env"
@@ -124,6 +125,30 @@ function push() {
 
 }
 
+function deploy() {
+
+  pushd $(dirname $BASH_SOURCE[0]) >/dev/null
+
+  if [[ ${DRONE} == "true" ]]; then
+    _assert_variables_set MW_PREEMPT_MANAGER K8S_CLUSTER_NAME
+    echo "-> Authenticating with GCloud"
+    echo "${MW_PREEMPT_MANAGER}" | gcloud auth activate-service-account --key-file -
+    gcp_project_name=$(echo "${MW_PREEMPT_MANAGER}" | jq -r '.project_id')
+    gcloud config set project "${gcp_project_name}"
+    region=$(gcloud container clusters list --filter "NAME=${K8S_CLUSTER_NAME}" --format "value(zone)")
+    gcloud container clusters get-credentials "${K8S_CLUSTER_NAME}" --region "${region}"
+  fi
+
+  kubectl apply -f k8s/.
+
+  if [[ ${DRONE} == "true" ]]; then
+    gcloud auth revoke
+  fi
+
+  popd >/dev/null
+
+}
+
 function _assert_variables_set() {
 
   local error=0
@@ -173,7 +198,7 @@ function ctrl_c() {
 
 trap ctrl_c INT
 
-if [[ ${1:-} =~ ^(help|run|build|test|watch-tests|push|init)$ ]]; then
+if [[ ${1:-} =~ ^(help|run|build|test|watch-tests|push|init|deploy)$ ]]; then
   COMMAND=${1}
   shift
   $COMMAND "$@"

@@ -16,13 +16,20 @@ steps:
     branch: master
 - name: deploy
   image: mosstech/drone-gke-deployer:latest
+  environment:
+    GCP_PROJECT_NAME:
+      from_secret: GCP_PROJECT_NAME
+    K8S_CLUSTER_NAME:
+      from_secret: K8S_CLUSTER_NAME
+    K8S_CLUSTER_REGION:
+      from_secret: K8S_CLUSTER_REGION
   commands:
-  - ./go test
+  - ./go deploy
   when:
     event: push
     branch: master
 ---
 kind: signature
-hmac: 06669dd08ad7e48ba5c5f0240dfe1544e56aa8ca82b92d54bb63fc52ca20fb1d
+hmac: 48709a34581965336c3c635baffdc113364080b3d89f79dce4b8f0e13df26150
 
 ...
