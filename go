@@ -130,10 +130,10 @@ function deploy() {
   pushd $(dirname $BASH_SOURCE[0]) >/dev/null
 
   if [[ ${DRONE} == "true" ]]; then
-    _assert_variables_set MW_PREEMPT_MANAGER K8S_CLUSTER_NAME
+    _assert_variables_set K8S_DEPLOYER_CREDS K8S_CLUSTER_NAME
     echo "-> Authenticating with GCloud"
-    echo "${MW_PREEMPT_MANAGER}" | gcloud auth activate-service-account --key-file -
-    gcp_project_name=$(echo "${MW_PREEMPT_MANAGER}" | jq -r '.project_id')
+    echo "${K8S_DEPLOYER_CREDS}" | gcloud auth activate-service-account --key-file -
+    gcp_project_name=$(echo "${K8S_DEPLOYER_CREDS}" | jq -r '.project_id')
     gcloud config set project "${gcp_project_name}"
     region=$(gcloud container clusters list --filter "NAME=${K8S_CLUSTER_NAME}" --format "value(zone)")
     gcloud container clusters get-credentials "${K8S_CLUSTER_NAME}" --region "${region}"

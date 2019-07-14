@@ -17,10 +17,10 @@ steps:
 - name: deploy
   image: mosstech/drone-gke-deployer:latest
   environment:
-    MW_PREEMPT_MANAGER:
-      from_secret: MW_PREEMPT_MANAGER
+    K8S_DEPLOYER_CREDS:
+      from_secret: MW_K8S_DEPLOYER
     K8S_CLUSTER_NAME:
-      from_secret: K8S_CLUSTER_NAME
+      from_secret: MW_K8S_CLUSTER_NAME
   commands:
   - ./go deploy
   when:
@@ -28,6 +28,6 @@ steps:
     branch: master
 ---
 kind: signature
-hmac: 776ad793b568e92ca9eff0024a18a1ed7f34c403f6af45a80e306084aba8208d
+hmac: b9e44e8d10ba0a74d5bf0cd8e3e11bff60da4647ef001dac2204f391e1d4f2fd
 
 ...
