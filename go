@@ -136,15 +136,20 @@ function deploy() {
     _console_msg "-> Authenticating with GCloud"
     echo "${K8S_DEPLOYER_CREDS}" | gcloud auth activate-service-account --key-file -
     gcp_project_name=$(echo "${K8S_DEPLOYER_CREDS}" | jq -r '.project_id')
+    _console_msg "-> Setting GCP Project to ${gcp_project_name}"
     gcloud config set project "${gcp_project_name}"
     region=$(gcloud container clusters list --filter "NAME=${K8S_CLUSTER_NAME}" --format "value(zone)")
+    _console_msg "-> Authenticating to cluster cluster ${K8S_CLUSTER_NAME} in ${region}"
     gcloud container clusters get-credentials "${K8S_CLUSTER_NAME}" --region "${region}"
   fi
+
+  _console_msg "Setting up secrets"
 
   kubectl delete secret -n=${NAMESPACE} anti-preempter-creds || true
   kubectl create secret -n=${NAMESPACE} generic anti-preempter-creds \
                         --from-literal=google_creds="${GOOGLE_CREDS}"
 
+  _console_msg "Applying Kubernetes yaml"
   cat k8s/*.yaml | envsubst | kubectl apply -n ${NAMESPACE} -f -
   
   popd >/dev/null
