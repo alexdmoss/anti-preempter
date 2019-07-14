@@ -141,7 +141,7 @@ function deploy() {
     gcloud container clusters get-credentials "${K8S_CLUSTER_NAME}" --region "${region}"
   fi
 
-  kubectl delete secret -n=${NAMESPACE} anti-preempter-config || true
+  kubectl delete secret -n=${NAMESPACE} anti-preempter-creds || true
   kubectl create secret -n=${NAMESPACE} generic anti-preempter-creds \
                         --from-literal=google_creds="${GOOGLE_CREDS}"
 
