@@ -43,8 +43,8 @@ def main():
     if not args.dryrun:
         if instance_to_delete:
             operation = delete_instance(project=GCP_PROJECT_ID, instance=instance_to_delete[0], zone=instance_to_delete[1])
-        if operation:
-            wait_for_operation(project=GCP_PROJECT_ID, zone=instance_to_delete[1], operation=operation["name"])
+            if operation:
+                wait_for_operation(project=GCP_PROJECT_ID, zone=instance_to_delete[1], operation=operation["name"])
     else:
         logger.info(f"DRY RUN: Would delete {instance_to_delete[0]} in {instance_to_delete[1]}, but SKIPPING")
 
