@@ -21,20 +21,13 @@ spec:
           containers:
           - name: anti-preempter
             image: eu.gcr.io/moss-work/anti-preempter:latest
-            # dry-run switch
+            envFrom:
+            - secretRef:
+                name: anti-preempter-credentials
+            ### dry-run switch
             # args:
             # - -t
           restartPolicy: OnFailure
-          env:
-          - name: GCP_PROJECT_ID
-            value: moss-work
-          - name: INSTANCE_INTERVAL
-            value: 600
-          - name: GOOGLE_CREDS
-            valueFrom:
-              secretKeyRef:
-                name: anti-preempter-credentials
-                key: creds
 ---
 apiVersion: v1
 kind: Secret
