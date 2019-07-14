@@ -17,10 +17,14 @@ steps:
 - name: deploy
   image: mosstech/drone-gke-deployer:latest
   environment:
+    NAMESPACE: mw-platform
+    GCP_PROJECT_ID: moss-work
     K8S_DEPLOYER_CREDS:
       from_secret: MW_K8S_DEPLOYER
     K8S_CLUSTER_NAME:
       from_secret: MW_K8S_CLUSTER_NAME
+    GOOGLE_CREDS:
+      from_secret: MW_PREEMPT_MANAGER
   commands:
   - ./go deploy
   when:
@@ -28,6 +32,6 @@ steps:
     branch: master
 ---
 kind: signature
-hmac: b9e44e8d10ba0a74d5bf0cd8e3e11bff60da4647ef001dac2204f391e1d4f2fd
+hmac: e860c3b4c8a092e2a8ae6f48bc95d8e4a23cd6fcd15b6152a249b6bdbad9f4e8
 
 ...

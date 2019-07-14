@@ -127,11 +127,13 @@ function push() {
 
 function deploy() {
 
+  _assert_variables_set GCP_PROJECT_ID GOOGLE_CREDS NAMESPACE
+
   pushd $(dirname $BASH_SOURCE[0]) >/dev/null
 
-  if [[ ${DRONE} == "true" ]]; then
+  if [[ ${DRONE:-} == "true" ]]; then
     _assert_variables_set K8S_DEPLOYER_CREDS K8S_CLUSTER_NAME
-    echo "-> Authenticating with GCloud"
+    _console_msg "-> Authenticating with GCloud"
     echo "${K8S_DEPLOYER_CREDS}" | gcloud auth activate-service-account --key-file -
     gcp_project_name=$(echo "${K8S_DEPLOYER_CREDS}" | jq -r '.project_id')
     gcloud config set project "${gcp_project_name}"
@@ -139,12 +141,12 @@ function deploy() {
     gcloud container clusters get-credentials "${K8S_CLUSTER_NAME}" --region "${region}"
   fi
 
-  kubectl apply -f k8s/.
+  kubectl delete secret -n=${NAMESPACE} anti-preempter-config || true
+  kubectl create secret -n=${NAMESPACE} generic anti-preempter-creds \
+                        --from-literal=google_creds="${GOOGLE_CREDS}"
 
-  if [[ ${DRONE} == "true" ]]; then
-    gcloud auth revoke
-  fi
-
+  cat k8s/*.yaml | envsubst | kubectl apply -n ${NAMESPACE} -f -
+  
   popd >/dev/null
 
 }
