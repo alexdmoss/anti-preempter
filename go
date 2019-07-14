@@ -131,16 +131,19 @@ function deploy() {
 
   pushd $(dirname $BASH_SOURCE[0]) >/dev/null
 
+  # when running in CI, we need to set up gcloud/kubeconfig
   if [[ ${DRONE:-} == "true" ]]; then
+
     _assert_variables_set K8S_DEPLOYER_CREDS K8S_CLUSTER_NAME
+
     _console_msg "-> Authenticating with GCloud"
     echo "${K8S_DEPLOYER_CREDS}" | gcloud auth activate-service-account --key-file -
-    gcp_project_name=$(echo "${K8S_DEPLOYER_CREDS}" | jq -r '.project_id')
-    _console_msg "-> Setting GCP Project to ${gcp_project_name}"
-    gcloud config set project "${gcp_project_name}"
-    region=$(gcloud container clusters list --filter "NAME=${K8S_CLUSTER_NAME}" --format "value(zone)")
-    _console_msg "-> Authenticating to cluster cluster ${K8S_CLUSTER_NAME} in ${region}"
-    gcloud container clusters get-credentials "${K8S_CLUSTER_NAME}" --region "${region}"
+
+    region=$(gcloud container clusters list --project=${GCP_PROJECT_ID} --filter "NAME=${K8S_CLUSTER_NAME}" --format "value(zone)")
+
+    _console_msg "-> Authenticating to cluster ${K8S_CLUSTER_NAME} in project ${GCP_PROJECT_ID} in ${region}"
+    gcloud container clusters get-credentials ${K8S_CLUSTER_NAME} --project=${GCP_PROJECT_ID} --region=${region}
+
   fi
 
   _console_msg "Setting up secrets"
