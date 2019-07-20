@@ -146,15 +146,15 @@ function deploy() {
 
   fi
 
+  _console_msg "Applying Kubernetes yaml"
+  cat k8s/*.yaml | envsubst | kubectl apply -n ${NAMESPACE} -f -
+
   _console_msg "Setting up secrets"
 
   kubectl delete secret -n=${NAMESPACE} anti-preempter-creds || true
   kubectl create secret -n=${NAMESPACE} generic anti-preempter-creds \
                         --from-literal=google_creds="${GOOGLE_CREDS}"
 
-  _console_msg "Applying Kubernetes yaml"
-  cat k8s/*.yaml | envsubst | kubectl apply -n ${NAMESPACE} -f -
-  
   popd >/dev/null
 
 }
