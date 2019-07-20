@@ -30,3 +30,4 @@ This is quite handy to validate out-of-band:
 ```sh
 gcloud compute instances list --project="${GCP_PROJECT_ID}" --filter="PREEMPTIBLE:true" --format='value(creationTimestamp.date(format=%s),name,zone,status)'| sort
 ```
+
