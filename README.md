@@ -17,6 +17,7 @@ A bash wrapper script `./go` is provided that provides some help:
 
 ## To Do
 
+- [ ] Needs protections adding for brand new cluster / being overly aggressive
 - [ ] Image Tag in deploy
 - [ ] Drone: define secrets through API
 - [ ] Drone: deal with gated builds
