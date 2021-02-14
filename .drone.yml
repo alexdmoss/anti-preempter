@@ -7,7 +7,7 @@ steps:
   image: plugins/gcr
   settings:
     registry: eu.gcr.io
-    repo: moss-work/anti-preempter
+    repo: grand-signifier-297613/anti-preempter
     tags: latest
     json_key:
       from_secret: MW_PUSH_CREDS
@@ -17,8 +17,9 @@ steps:
 - name: deploy
   image: mosstech/drone-gke-deployer:latest
   environment:
-    NAMESPACE: mw-platform
-    GCP_PROJECT_ID: moss-work
+    NAMESPACE: anti-preempter
+    GCP_PROJECT_ID:
+      from_secret: MW_GCP_PROJECT_ID
     K8S_DEPLOYER_CREDS:
       from_secret: MW_K8S_DEPLOYER
     K8S_CLUSTER_NAME:
@@ -32,6 +33,6 @@ steps:
     branch: master
 ---
 kind: signature
-hmac: e860c3b4c8a092e2a8ae6f48bc95d8e4a23cd6fcd15b6152a249b6bdbad9f4e8
+hmac: 53f037da14aadba64295c121278d8433610c93f202baa025b0c5684eb5cc5063
 
 ...

@@ -146,6 +146,8 @@ function deploy() {
 
   fi
 
+  kubectl create ns ${NAMESPACE}
+  
   _console_msg "Applying Kubernetes yaml"
   cat k8s/*.yaml | envsubst | kubectl apply -n ${NAMESPACE} -f -
 
