@@ -11,6 +11,8 @@ steps:
     tags: latest
     json_key:
       from_secret: MW_PUSH_CREDS
+    config:
+      from_secret: DOCKER_AUTH_CONFIG
   when:
     event: push
     branch: master
@@ -33,6 +35,6 @@ steps:
     branch: master
 ---
 kind: signature
-hmac: 53f037da14aadba64295c121278d8433610c93f202baa025b0c5684eb5cc5063
+hmac: 152262e6b7ef2b36bf4aacd5ec308c62d78cd5e5ee8fbfb46b811801ac33894d
 
 ...
