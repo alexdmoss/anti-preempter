@@ -7,7 +7,7 @@ steps:
   image: plugins/gcr
   settings:
     registry: eu.gcr.io
-    repo: grand-signifier-297613/anti-preempter
+    repo: daring-glider-306622/anti-preempter
     tags: latest
     json_key:
       from_secret: MW_PUSH_CREDS
